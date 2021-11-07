@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %} 
+    <div class="jumbotron text-center">
+        <h3>Teknoloji ve bilim Bloğuna hoş geldiniz</h3>
+        <p>Bu blogda Yazılım geliştirme, Yapay zeka, IoT , Elektronik ve gömülü sistemler, Proje yönetimi(PMI-PMP), Dijital pazarlama ve dönüşüm ile ilgili tüm güncel bilgi, ders ve haberler size sunulmaktadır</p>
+    </div>
+
+
+    <p>
+        {% if request.user.is_authenticated %}
+            Giriş yapılmış, {{request.user.username}}
+        {% else %}
+            Giriş yapılmamış
+        {% endif %}
+    </p>
+
+
+
+   
+
+{% endblock body %}

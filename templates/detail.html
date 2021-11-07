@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <div class="row">
+                <div class="col-lg-8">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h2 class="fw-bolder mb-1">{{article.title}}</h2>
+                            <hr>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">by {{article.author.username}}</div>
+                            <hr>
+                            <!-- date/time content -->
+                            <p>{{article.createdDate}}</p>
+                            <hr>
+                            <!-- Post categories
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a> -->
+                        </header>
+                        <!-- Preview image figure-->
+                        {% if article.article_image %}
+                            <img class="img-fluid rounded" src="{{article.article_image.url}}" alt="" />
+                        {% endif %}
+                        
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            {{article.content | safe }}
+                        </section>
+                    </article>
+                    
+
+                    <hr>
+                    <h4>Yorumlar</h4>
+                    <hr>
+                    {% if comments %}
+                        {% for comment in comments %}
+                            <div class="media mb-4">
+                                <div class="d-flex mr-3 rounded-circle"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="media-body">
+                                    <div class="mt-0">{{comment.comment_author}}</div>
+                                    <small class="text-muted">{{comment.comment_date}}</small>
+                                    <br>
+                                    {{comment.comment_content}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        
+                    {% else %}  
+                        <div class="alert alert-danger">
+                            Bu makaleye herhangi bir yorum yazılmamış, ilk yorum yazan siz olun!
+                        </div>
+                    {% endif %}
+                        
+
+                    <div class="card my-4">
+                        <h5 class="card-header">Yorum ekle</h5>
+                        <div class="card-body">
+                            <form class="mb-4"  method="post" action = "{% url 'article:comment' article.id %}">
+                                {% csrf_token %}
+
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">İsim</label>
+                                    <input name="comment_author" type="text" class="form-control" id="exampleInputEmail1"  placeholder="İsim giriniz...">
+                                    <!-- <small id="emailHelp" class="form-text text-muted">İsminizi Girin:</small> -->
+                                </div>
+
+                                <div class="form-group"> 
+                                    <label for="exampleInputEmail1">Yorum</label>
+                                    <textarea name="comment_content" class="form-control" rows="3" placeholder="Yorum yazınız..."></textarea>
+                                </div>
+                                <button type="submit" class = "btn btn-danger">Gönder</button>
+                            </form>
+                        </div> 
+                    </div>
+                    
+                    
+
+                </div>
+
+                
+    </div>
+    
+
+{% endblock body %}
+

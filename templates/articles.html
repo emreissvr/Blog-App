@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+
+{% block body %}
+
+{% load crispy_forms_tags %} 
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <div class="col-lg-8">
+            <h3>Makaleler</h3>
+            <hr>
+        </div>
+     </div>        
+</div>
+
+<div style ="margin-top: 20px;"class="row">
+    <div style = "margin-left: 310px;" class="col-md-10 offset-md-4">
+        <div style = "margin-bottom: 20px;" class="col-lg-8">
+            <form class="form-inline my-2 my-lg-0">
+                 {% csrf_token %} <!-- her formda csrf_token kullanılmalı-->
+                <input style="margin-right: 10px; " class="input-sm" name = "keyword"type="text" placeholder="Search" maxlength="64" placeholder="Ara...">
+                <button  class="btn btn-outline-success my-2 my-sm-0" type="submit">Ara</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+        {% if articles %}
+
+            {% for article in articles %}
+
+                <div class="row">
+                    <div class="col-md-6 offset-md-3">  
+                        <div class="col-lg-8">
+                            <!-- Post content-->
+                            <article>
+                                <!-- Post header-->
+                                <header class="mb-4">
+                                    <!-- Post title-->
+                                    <a href="{% url 'article:detail' article.id %}">
+                                        <!-- /articles/article/5 -->
+                                        <h2 class="fw-bolder mb-1">{{article.title}}</h2>
+                                    </a>
+                                    <hr>
+                                    <!-- Post meta content-->
+                                    <div class="text-muted fst-italic mb-2">{{article.author.username}} tarafından yayınlandı</div>
+                                    <hr>
+                                    <!-- date/time content -->
+                                    <p>{{article.createdDate}}</p>
+                                    <hr>
+                                    <!-- Post categories
+                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a> -->
+                                </header>
+                                <!-- Preview image figure-->
+                                {% if article.article_image %}
+                                    <a href="{% url 'article:detail' article.id %}"><img class="img-fluid rounded" src="{{article.article_image.url}}" alt="" /></a>
+                                {% endif %}
+                                
+                                <!-- Post content-->
+                                <section class="mb-5">
+                                    {{article.content | safe | truncatewords:50}}
+                                </section>
+
+                                <a style="float: right;" href="{% url 'article:detail' article.id %}" class="btn btn-danger">Devamını oku</a>
+                            </article>
+                            
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="alert alert-danger">
+                        Herhangi bir makale bulunamadı
+                    </div> 
+        
+                </div>        
+            </div>
+            
+        {% endif %}
+
+        
+    
+
+{% endblock body  %}
+
+
